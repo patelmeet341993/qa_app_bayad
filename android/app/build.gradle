@@ -1,0 +1,74 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.bayad.qa_bayad"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdkVersion 21
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+
+// https://alzqa-web.bayad.com/?params=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6Ijk2MTIwMWYwLWYwNjItMTFlZC1hMDViLTAyNDJhYzEyMDAwMyIsInVzZXJfaWQiOiJmMzAyMjVmMy0yOGJkLTQ1NTItYmIxMi1iMjk4MzlkODFhZDciLCJmaXJzdF9uYW1lIjoiS2VudCIsImxhc3RfbmFtZSI6IlRlc3RpbmciLCJlbWFpbCI6ImtlbnRibGVzYXJpb0BnbWFpbC5jb20iLCJtb2JpbGVfbnVtYmVyIjoiKzYzOTIxNTgzODkxMyIsImFtb3VudCI6bnVsbCwiYmlsbGVyX2NvZGUiOm51bGwsImNhbGxiYWNrVXJsIjoiaHR0cHM6Ly9odHRwYmluZ28ub3JnL3Bvc3QiLCJyZWRpcmVjdFVybCI6IntcInN1Y2Nlc3NcIjpcImh0dHBzOi8vd3d3LmJheWFkLmNvbS9zdWNjZXNzLmh0bWxcIixcImZhaWx1cmVcIjpcImh0dHBzOi8vd3d3LmJheWFkLmNvbS9mYWlsdXJlLmh0bWxcIixcImNhbmNlbFwiOlwiaHR0cHM6Ly93d3cuYmF5YWQuY29tL2NhbmNlbC5odG1sXCJ9IiwicmVmZXJlbmNlX251bWJlciI6bnVsbCwiY3VzdG9tZXJfYWNjb3VudF9udW1iZXIiOm51bGwsImR1ZV9kYXRlIjoiIiwiaWF0IjoxNjg0MTUyMDA3LCJhdWQiOiJvcHAiLCJzdWIiOiJ1cmwiLCJqdGkiOiJiMGQ0MWU2OS1jY2MzLTQxNmYtYmJhNC1lN2Q2NjAxMDVjNDYifQ.DluaBiVcC04-0XU9oAV-xW7wTyWNLRTjm_TrWDmqsh0
